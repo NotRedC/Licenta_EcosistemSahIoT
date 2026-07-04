@@ -1,0 +1,11 @@
+{
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  },
+
+  "scripts": {
+    "start-dev": "concurrently \"cd chess_bridge && node server.js\" \"cd website && ng serve\"",
+    "server": "cd chess_bridge && node server.js",
+    "client": "cd website && ng serve"
+  }
+}

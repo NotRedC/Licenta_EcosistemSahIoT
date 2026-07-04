@@ -1,0 +1,74 @@
+<div class="tactical-dialog-container mat-typography">
+  
+  <h2 mat-dialog-title class="dialog-matrix-title">
+    <span> {{ data.mode === 'live' ? 'LIVE' : 'PAST' }} GAMES</span>
+  </h2>
+
+  <mat-dialog-content class="dialog-matrix-content">
+
+    @if (data.mode === 'past') {
+      <div class="import-panel font-mono animate-fade-in">
+        <span class="panel-label">IMPORT EXTERNAL GAMES:</span>
+        
+        <input 
+          type="file" 
+          #pgnFileInput 
+          accept=".pgn" 
+          style="display: none" 
+          (change)="onFileSelected($event)">
+        
+        <button 
+          mat-stroked-button 
+          color="accent" 
+          class="btn-import" 
+          [disabled]="isImporting()"
+          (click)="pgnFileInput.click()">
+          {{ isImporting() ? 'PARSING DATA...' : 'UPLOAD PGN' }}
+        </button>
+        </div>
+      }
+    
+    <mat-grid-list cols="2" rowHeight="150px" gutterSize="16px">
+      
+      @for (game of data.games(); track game.id) {
+        <mat-grid-tile class="cyber-tile">
+          <div class="tile-content-wrapper">
+            
+            <div class="tile-header">
+              <span class="game-id font-mono">GAME ID #{{ game.id.slice(0, 8) }}</span>
+              <span class="status-indicator">
+                {{ game.status.toUpperCase() }}
+                @if (game.result) { <span class="result-bracket">[{{ game.result.toUpperCase() }}]</span> }
+              </span>
+            </div>
+
+            <div class="tile-body font-mono">
+              <div class="player-row"><span class="label white-lbl">White:</span><span class="player-name"> {{ game.white_player }}</span></div>
+              <div class="player-row"><span class="label black-lbl">Black:</span><span class="player-name"> {{ game.black_player }}</span></div>
+            </div>
+
+            <div class="tile-actions">
+              <button mat-flat-button color="primary" class="btn-grid-action" [mat-dialog-close]="game.id" matRipple>
+                OPEN GAME
+              </button>
+            </div>
+
+          </div>
+        </mat-grid-tile>
+      } @empty {
+        <mat-grid-tile colspan="2" class="cyber-tile empty-tile">
+          <div class="empty-msg-wrapper font-mono">
+            <p>No games found.</p>
+          </div>
+        </mat-grid-tile>
+      }
+
+    </mat-grid-list>
+
+  </mat-dialog-content>
+
+  <!-- Escape/Execution Footers -->
+  <mat-dialog-actions align="end" class="dialog-matrix-actions">
+    <button mat-stroked-button mat-dialog-close class="btn-close-matrix">Close</button>
+  </mat-dialog-actions>
+</div>

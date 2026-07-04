@@ -1,0 +1,33 @@
+.chess-svg {
+  width: 100%;
+  height: 100%;
+  
+  rect.light { fill: var(--mat-sys-inverse-surface, #303030); }
+  rect.dark  { fill: var(--mat-sys-inverse-on-surface, #e2e2e2); }
+  
+  rect.selected { fill: rgba(255, 235, 59, 0.35) !important; }
+  rect.hint-piece { fill: rgba(76, 175, 80, 0.3) !important; }
+  rect.hint-target { fill: rgba(76, 175, 80, 0.4) !important; }
+  
+  .move-hint {
+    fill: var(--mat-sys-on-primary-fixed);
+    opacity: 0.8;
+  }
+  
+  .chess-piece {
+    font-size: 80px;
+    cursor: grab;
+    user-select: none;  
+  }
+
+  .board-coord {
+    font-family: monospace;
+    font-size: 14px;
+    font-weight: bold;
+    fill: var(--mat-sys-on-surface-variant);
+  }
+
+  &.preview-mode {
+    filter: grayscale(100%) contrast(100%) brightness(90%);
+  }
+}

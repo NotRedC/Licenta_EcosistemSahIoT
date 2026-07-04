@@ -1,0 +1,19 @@
+<div class="clock-container">
+      <div 
+        [class.active]="activeColor() === 'White'" 
+        class="clock-card" 
+        role="timer" 
+        [attr.aria-label]="'White time remaining: ' + whiteTime()">
+        <span class="player-label">White</span>
+        <span class="time-digits">{{ whiteTime() }}</span>
+      </div>
+      
+      <div 
+        [class.active]="activeColor() === 'Black'" 
+        class="clock-card" 
+        role="timer" 
+        [attr.aria-label]="'Black time remaining: ' + blackTime()">
+        <span class="player-label">Black</span>
+        <span class="time-digits">{{ blackTime() }}</span>
+      </div>
+</div>

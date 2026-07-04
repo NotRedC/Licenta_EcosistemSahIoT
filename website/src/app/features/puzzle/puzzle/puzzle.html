@@ -1,0 +1,129 @@
+<div class="page-workspace-wrapper mat-typography">
+  
+  @if (showDifficultyModal()) {
+    <div class="modal-overlay backdrop-blur">
+      <mat-card class="modal-card tactical-card" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title class="mat-headline-6">Select Puzzle Difficulty</mat-card-title>
+        </mat-card-header>
+        <mat-card-content class="modal-actions-vertical">
+          <button mat-flat-button class="btn-diff easy" (click)="selectDifficulty('easy')">Easy</button>
+          <button mat-flat-button class="btn-diff medium" (click)="selectDifficulty('medium')">Medium</button>
+          <button mat-flat-button class="btn-diff hard" (click)="selectDifficulty('hard')">Hard</button>
+          <button mat-stroked-button class="btn-cancel" routerLink="/">Back to Hub Menu</button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+
+  @if (showCompletionModal()) {
+    <div class="modal-overlay backdrop-blur">
+      <mat-card class="modal-card summary-card tactical-card" appearance="outlined">
+        <mat-card-header>
+          <mat-card-title class="mat-headline-6">Puzzle Completed Successfully!</mat-card-title>
+          <mat-card-subtitle>What would you like to execute next?</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content class="modal-actions-vertical">
+          <button mat-flat-button color="primary" class="btn-action-primary" (click)="puzzle.enablePostAnalysis()">
+            Analyze Position
+          </button>
+          <button mat-flat-button color="btn-action-secondary" class="btn-action-secondary" (click)="triggerNextPuzzle()">
+            Next Puzzle 
+          </button>
+          <button mat-stroked-button class="btn-action-minimal" (click)="triggerBackToMenu()">
+            Exit to Main Menu
+          </button>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  }
+
+  <mat-toolbar class="workspace-navigation-bar" appearance="flat">
+    <button mat-stroked-button class="btn-return-hub" (click)="triggerBackToMenu()">
+      <mat-icon>arrow_back</mat-icon>
+      Exit Workspace
+    </button>
+  </mat-toolbar>
+
+  <div class="tactical-workspace-layout" [class.no-eval]="!puzzle.isAnalysisEnabled()">
+    
+    @if (puzzle.isAnalysisEnabled()) {
+      <div class="eval-bar-block">
+        <app-eval-bar 
+          [score]="currentScoreString()"
+          [whitePercentage]="whitePercentage()"
+          [isThinking]="engine.isAnalyzing()">
+        </app-eval-bar>
+      </div>
+    }
+
+    <div class="canvas-board-block">
+      <mat-card appearance="outlined" class="board-card">
+        <mat-card-content class="board-card-content">
+          <app-chess-board 
+            [fen]="puzzle.puzzleFen"
+            [isAnalysisActive]="puzzle.isAnalysisEnabled()"
+            [hintSquares]="puzzle.hintSquares()"
+            (moveMade)="puzzle.isAnalysisEnabled() ? gameState.playAnalysisChessMove($event) : puzzle.submitPlayerMove($event)">
+          </app-chess-board>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="sidebar-control-rail">
+      
+      @if (!puzzle.isAnalysisEnabled()) {
+        <mat-card appearance="outlined" class="puzzle-controls-box">
+          <mat-card-content>
+          
+          <div class="action-buttons-row">
+            <button mat-stroked-button class="btn-control-hint" 
+                    [disabled]="puzzle.puzzleStatus() === 'completed'"
+                    (click)="puzzle.requestHint()">
+              Get Hint (Lvl: {{ puzzle.hintLevel() }}/2)
+            </button>
+            <button mat-stroked-button class="btn-control-solve" 
+                    [disabled]="puzzle.puzzleStatus() === 'completed'"
+                    (click)="puzzle.showMoves()">
+              Show Moves
+            </button>
+          </div>
+
+          <div class="status-badge-indicator" [ngClass]="puzzle.puzzleStatus()">
+            @switch (puzzle.puzzleStatus()) {
+              @case ('thinking') { <span class="status-flex">Find the winning sequence continuation...</span> }
+              @case ('correct') { <span class="status-flex txt-success">Correct move! Next step...</span> }
+              @case ('failed') { <span class="status-flex txt-danger">Wrong move order. Try again!</span> }
+              @case ('completed') { <span class="status-flex txt-complete">Solved!</span> }
+            }
+          </div>
+          </mat-card-content>
+          </mat-card>
+      }
+
+    <div class="history-rail-wrapper">
+      <mat-card appearance="outlined" class="sidebar-card">
+          <mat-card-content class="sidebar-card-content">
+      <app-move-history 
+        [displayHistory]="puzzle.puzzleHistory"
+        [fen]="puzzle.puzzleFen"
+        [topLines]="engine.topLines()"
+        [isAnalyzing]="engine.isAnalyzing()"
+        [showEngineLines]="puzzle.isAnalysisEnabled()"
+        (historyMoveClicked)="puzzle.isAnalysisEnabled() ? gameState.startAnalysisChess($event) : null"
+        (engineLineClicked)="puzzle.isAnalysisEnabled() ? gameState.playAnalysisChessMove($event) : null">
+      </app-move-history>
+      </mat-card-content>
+      </mat-card>
+      </div>
+
+      @if (puzzle.isAnalysisEnabled()) {
+        <div class="post-analysis-footer-controls animate-fade-in">
+          <button mat-flat-button color="primary" class="btn-nav-next" (click)="triggerNextPuzzle()">Next Puzzle</button>
+          <button mat-stroked-button class="btn-nav-menu" (click)="triggerBackToMenu()">Back to Menu</button>
+        </div>
+      }
+
+    </div>
+  </div>
+</div>

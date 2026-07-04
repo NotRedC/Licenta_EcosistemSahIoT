@@ -1,2 +1,2 @@
-# Licenta_EcosistemSahIoT
+# Licenta
 

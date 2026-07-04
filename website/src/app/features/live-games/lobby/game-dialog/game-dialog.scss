@@ -1,0 +1,245 @@
+.tactical-dialog-container {
+  display: flex;
+  flex-direction: column;
+  background-color: var(--mat-sys-surface-container-high, #1e1e1e);
+  color: var(--mat-sys-on-surface, #fff);
+  border-radius: 12px;
+  overflow: hidden;
+
+  .dialog-matrix-title {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 1.5rem;
+    margin: 0;
+    text-transform: uppercase;
+    font-weight: 900;
+    letter-spacing: 2px;
+    font-size: 1.1rem;
+    color: var(--mat-sys-primary, #3f51b5);
+    border-bottom: 1px solid var(--mat-sys-outline-variant, #2a2a2a);
+
+    .title-vector-icon {
+      font-size: 22px;
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  .dialog-matrix-content {
+    max-height: 65vh;
+    padding: 1.5rem !important;
+    overflow-y: auto;
+  }
+
+  .import-panel {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: var(--mat-sys-surface-container-low, #141414);
+    border: 1px dashed var(--mat-sys-outline-variant, #333);
+    border-radius: 8px;
+    padding: 1rem 1.25rem;
+    margin-bottom: 1.5rem;
+    font-size: 0.85rem;
+
+    .panel-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--mat-sys-on-surface-variant, #888);
+
+      .panel-icon {
+        font-size: 18px;
+        width: 18px;
+        height: 18px;
+      }
+
+      .panel-label {
+        letter-spacing: 1px;
+        font-weight: bold;
+      }
+    }
+
+    .btn-import {
+      font-weight: bold;
+      letter-spacing: 0.5px;
+      font-size: 0.75rem;
+      border-color: var(--mat-sys-outline, #ff9800) !important; 
+      color: var(--mat-sys-outline, #ff9800) !important;
+
+      &:hover:not([disabled]) {
+        background-color: rgba(255, 152, 0, 0.05);
+      }
+
+      .btn-icon-spin {
+        animation: loading-rotation 2s infinite linear;
+        font-size: 16px;
+        width: 16px;
+        height: 16px;
+        margin-right: 4px;
+        vertical-align: middle;
+      }
+    }
+  }
+
+  .cyber-tile {
+    background-color: var(--mat-sys-surface-container, #1c1c1c);
+    border: 1px solid var(--mat-sys-outline-variant, #2a2a2a);
+    border-radius: 8px;
+    box-sizing: border-box;
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1), 
+                box-shadow 0.25s cubic-bezier(0.4, 0, 0.2, 1),
+                border-color 0.25s ease;
+
+    .tile-content-wrapper {
+      width: 100%;
+      height: 100%;
+      padding: 1rem;
+      box-sizing: border-box;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    .tile-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.75rem;
+
+      .game-id {
+        color: var(--mat-sys-on-surface-variant, #666);
+        font-weight: bold;
+      }
+
+      .status-indicator {
+        color: var(--mat-sys-on-surface-variant, #aaa);
+        font-family: monospace;
+        font-size: 0.7rem;
+        background-color: var(--mat-sys-surface-container-high, #262626);
+        padding: 0.15rem 0.4rem;
+        border-radius: 4px;
+
+        .result-bracket {
+          color: var(--mat-sys-primary, #3f51b5);
+          font-weight: bold;
+        }
+
+        &.live-pulse {
+          color: #00e5ff;
+          background-color: rgba(0, 229, 255, 0.08);
+          font-weight: bold;
+          box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.2);
+          animation: core-glow 2s infinite ease-in-out;
+        }
+      }
+    }
+
+    .tile-body {
+      font-size: 0.85rem;
+      color: var(--mat-sys-on-surface, #ddd);
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+
+      .player-row {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+
+      .label {
+        font-weight: bold;
+        margin-right: 4px;
+        display: inline-block;
+        width: 45px;
+
+        &.white-lbl { color: var(--mat-sys-on-surface-variant, #888); }
+        &.black-lbl { color: var(--mat-sys-primary, #3f51b5); }
+      }
+
+      .player-name {
+        font-weight: 500;
+      }
+    }
+
+    .btn-grid-action {
+      width: 100%;
+      height: 30px;
+      line-height: 30px;
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: bold;
+      letter-spacing: 0.5px;
+    }
+
+    &:hover:not(.empty-tile) {
+      transform: translateY(-4px);
+      border-color: var(--mat-sys-primary, #3f51b5);
+      box-shadow: var(--mat-sys-level3, 0px 5px 5px -3px rgba(0, 0, 0, 0.2));
+    }
+
+    &.tile-ongoing {
+      border-left: 3px solid #00e5ff;
+      
+      &:hover {
+        border-color: #00e5ff;
+        box-shadow: 0 4px 15px rgba(0, 229, 255, 0.15);
+      }
+    }
+  }
+
+  .empty-tile {
+    border-style: dashed;
+    background-color: transparent;
+    
+    .empty-msg-wrapper {
+      text-align: center;
+      color: var(--mat-sys-on-surface-variant, #555);
+      font-size: 0.8rem;
+      letter-spacing: 0.5px;
+
+      .empty-icon {
+        font-size: 28px;
+        width: 28px;
+        height: 28px;
+        margin-bottom: 0.25rem;
+      }
+    }
+  }
+
+  .dialog-matrix-actions {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid var(--mat-sys-outline-variant, #2a2a2a);
+    background: var(--mat-sys-surface-container, #1a1a1a);
+
+    .btn-close-matrix {
+      color: var(--mat-sys-on-surface-variant, #aaa);
+      border-color: var(--mat-sys-outline-variant, #333);
+      font-family: monospace;
+      font-size: 0.75rem;
+      font-weight: bold;
+    }
+  }
+}
+
+@keyframes loading-rotation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes core-glow {
+  0% { box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.2); }
+  50% { box-shadow: inset 0 0 8px rgba(0, 229, 255, 0.4); }
+  100% { box-shadow: inset 0 0 0 1px rgba(0, 229, 255, 0.2); }
+}
+
+.animate-fade-in {
+  animation: modalFadeIn 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+@keyframes modalFadeIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to { opacity: 1; transform: translateY(0); }
+}

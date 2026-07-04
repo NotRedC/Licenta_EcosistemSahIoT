@@ -9,6 +9,8 @@
 
 # Node
 /node_modules
+chess_bridge/node_modules
+website/node_modules
 npm-debug.log
 yarn-error.log
 package-lock.json

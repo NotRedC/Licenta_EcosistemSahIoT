@@ -1,0 +1,8 @@
+ <div class="eval-container" role="progressbar" 
+ [class.is-thinking]="isThinking()"
+ [class.white-advantage]="whitePercentage() > 50"
+ [class.black-advantage]="whitePercentage() <= 50">
+      <div class="black-fill"></div>
+      <div class="white-fill" [style.height.%]="whitePercentage()"></div>
+      <span class="score-text">{{ score() }}</span>
+</div>

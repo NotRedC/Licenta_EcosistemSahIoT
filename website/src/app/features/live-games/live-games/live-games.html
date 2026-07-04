@@ -1,0 +1,76 @@
+<div class="page-workspace-wrapper mat-typography">
+  
+  <mat-toolbar class="workspace-navigation-bar" appearance="flat">
+    <button mat-stroked-button class="btn-return-hub" routerLink="/">
+      <mat-icon>arrow_back</mat-icon>
+      <span>Exit to Main Menu</span>
+    </button>
+  </mat-toolbar>
+
+  <div class="tactical-workspace-layout" [class.has-clock]="gameStatus() === 'ongoing'">
+    @if (isReady()) {
+      @if (showGameOverCard()) {
+        <div class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="outcome-title">
+        <mat-card class="outcome-card">
+          <mat-card-header>
+            <mat-card-title id="outcome-title">Game Over</mat-card-title>
+          </mat-card-header>
+          <mat-card-content>
+            <p class="outcome-text" role="status" aria-live="assertive">
+              {{ gameResultMessage() }}
+            </p>
+          </mat-card-content>
+          <mat-card-actions class="outcome-buttons">
+            <button mat-raised-button color="primary" (click)="gameState.startAnalysisChess(gameState.moveHistory().length-1)" (click)="closeGameOverCard()">
+                Analyze Game
+            </button>
+            <button mat-button color="accent" routerLink="/">
+              Main Menu
+            </button>
+          </mat-card-actions>
+        </mat-card>
+      </div>
+    }
+    <div class ="eval-bar-block">
+        <app-eval-bar
+            [score]="currentScoreString()"
+            [whitePercentage]="whitePercentage()"
+            [isThinking]="engine.isAnalyzing()">
+        </app-eval-bar>
+    </div>
+    <div class="canvas-board-block">
+      <mat-card appearance="outlined" class="board-card">
+        <mat-card-content class = "board-card-content">
+          <app-chess-board
+            [fen]="gameState.displayFen()"
+            [isAnalysisActive]="gameState.isAnalysisActive()"
+            (moveMade)="gameState.makeMove($event.from, $event.to)">
+          </app-chess-board>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div class="sidebar-control-rail">
+      <mat-card appearance="outlined" class="sidebar-card">
+        <mat-card-content class="sidebar-card-content">
+          <app-move-history
+            [displayHistory]="gameState.moveHistory()"
+            [topLines]="engine.topLines()"
+            [isAnalyzing]="engine.isAnalyzing()"
+            [isAnalysisActive]="gameState.isAnalysisActive()"
+            [fen]="gameState.displayFen()"
+            (historyMoveClicked)="gameState.startAnalysisChess($event)"
+            (engineLineClicked)="gameState.playAnalysisChessMove($event)"
+            (exitAnalysisChess)="gameState.exitAnalysisChess()">
+          </app-move-history>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  } @else {
+    <mat-card class="loading-card" role="status" aria-live="polite">
+      <mat-card-content>
+        <p>Syncing games.</p>
+      </mat-card-content>
+    </mat-card>
+  }
+  </div>
+</div>

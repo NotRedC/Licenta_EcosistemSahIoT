@@ -1,0 +1,31 @@
+<div class="lobby-shell mat-typography">
+  <mat-toolbar class="lobby-navigation-bar" appearance="flat">
+    <button mat-stroked-button class="btn-return-hub" routerLink="/">
+      <mat-icon>arrow_back</mat-icon>Back to Main Menu
+    </button>
+    <span class="toolbar-spacer"></span>
+  </mat-toolbar>
+
+  <div class="lobby-central-container">
+    <header class="lobby-header-meta">
+      <h2 class="mat-headline-4">Live Game Mode</h2>
+      <p class="mat-body-1">Select a game to watch</p>
+    </header>
+
+    <div class="lobby-selection-grid">
+      <mat-card class="lobby-card live-profile" (click)="openGamesDialog('live')" appearance="outlined" matRipple>
+        <div class="card-glow-indicator live"></div>
+        <mat-card-header>
+          <mat-card-title class="mat-headline-6">View Live Games</mat-card-title>
+        </mat-card-header> 
+      </mat-card>
+
+      <mat-card class="lobby-card past-profile" (click)="openGamesDialog('past')" appearance="outlined" matRipple>
+        <div class="card-glow-indicator past"></div>
+        <mat-card-header>
+          <mat-card-title class="mat-headline-6">View Past Games</mat-card-title>
+        </mat-card-header>
+      </mat-card>
+    </div>
+  </div>
+</div>

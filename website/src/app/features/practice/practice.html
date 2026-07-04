@@ -1,0 +1,48 @@
+<div class="page-workspace-wrapper mat-typography">
+  
+  <mat-toolbar class="workspace-navigation-bar" appearance="flat">
+    <button mat-stroked-button class="btn-return-hub" routerLink="/">
+      <mat-icon>arrow_back</mat-icon>
+      <span>Exit to Main Menu</span>
+    </button>
+  </mat-toolbar>
+
+  <div class="tactical-workspace-layout">
+    <div class ="eval-bar-block">
+        <app-eval-bar
+            [score]="currentScoreString()"
+            [whitePercentage]="whitePercentage()"
+            [isThinking]="engine.isAnalyzing()">
+        </app-eval-bar>
+    </div>
+
+    <div class="canvas-board-block">
+      <mat-card appearance="outlined" class="board-card">
+        <mat-card-content class = "board-card-content">
+          <app-chess-board
+            [fen]="gameState.displayFen()"
+            [isAnalysisActive]="gameState.isAnalysisActive()"
+            (moveMade)="gameState.makeMove($event.from, $event.to)">
+          </app-chess-board>
+        </mat-card-content>
+      </mat-card>
+    </div>
+
+    <div class="sidebar-control-rail">
+      <mat-card appearance="outlined" class="sidebar-card">
+        <mat-card-content class="sidebar-card-content">
+          <app-move-history
+            [displayHistory]="gameState.moveHistory()"
+            [topLines]="engine.topLines()"
+            [isAnalyzing]="engine.isAnalyzing()"
+            [isAnalysisActive]="gameState.isAnalysisActive()"
+            [fen]="gameState.displayFen()"
+            (historyMoveClicked)="gameState.startAnalysisChess($event)"
+            (engineLineClicked)="gameState.playAnalysisChessMove($event)"
+            (exitAnalysisChess)="gameState.exitAnalysisChess()">
+          </app-move-history>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

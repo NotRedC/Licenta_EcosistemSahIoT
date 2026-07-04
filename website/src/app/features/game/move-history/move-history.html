@@ -1,0 +1,74 @@
+
+<div class="history-container mat-typography" role="log" aria-label="Move History">
+  
+  @if (showEngineLines()) {
+    <div class="analysis-suggestions">
+      <div class="section-title mat-subtitle-2">Engine Analysis</div>
+      
+      @if (isAnalyzing()) {
+        <div class="loading-container">
+          <div class="skeleton-row pulse"></div>
+          <div class="skeleton-row pulse"></div>
+          <div class="skeleton-row pulse"></div>
+          <div class="loading-text mat-caption">Calculating best lines...</div>
+        </div>
+      } @else {
+        @for (line of topLines(); track line.sequence; let i = $index) {
+          <div class="suggestion-row" (click)="engineLineClicked.emit(line.move)" matRipple>
+            <span class="eval-tag" [class.neg]="line.evaluation < 0">
+              {{ line.evaluation }}
+            </span>
+            <span class="sequence-text mat-body-2">{{ formatSequence(line.sequence) }}</span>
+          </div>
+        }
+      }
+    </div>
+  }
+<div class="history-section">
+  <div class="history-header">
+      <span class="header-title mat-subtitle-1">Move History</span>
+      @if (isAnalysisActive()) {
+        <button mat-flat-button color="warn" class="btn-live" (click)="exitAnalysisChess.emit()">
+          Go Live
+        </button>
+      }
+  </div>
+
+    <div class="scroll-area">
+      <table class="history-table">
+        <thead>
+          <tr>
+            <th class="col-num">#</th>
+            <th>White</th>
+            <th>Black</th>
+          </tr>
+        </thead>
+        <tbody>
+        @for (pair of movePairs(); track pair.number) {
+          <tr>
+            <td class="col-num mat-hint">{{ pair.number }}.</td>
+            <td class="move-cell"
+                  [class.active-move]="activeMoveIndex() === (pair.number * 2 - 2)"
+                  (click)="historyMoveClicked.emit(pair.number * 2 - 2)">
+              {{ pair.white }}
+            </td>
+            
+            @if (pair.black) {
+              <td class="move-cell" 
+                    [class.active-move]="activeMoveIndex() === (pair.number * 2 - 1)"
+                    (click)="historyMoveClicked.emit(pair.number * 2 - 1)">
+                {{ pair.black }}
+              </td>
+            }
+          </tr>
+        }
+        @empty {
+            <tr>
+              <td colspan="3" class="empty-msg mat-hint">No moves yet</td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
